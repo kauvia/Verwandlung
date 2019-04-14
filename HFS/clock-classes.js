@@ -60,14 +60,15 @@ class Tile {
 }
 
 class Clock {
-	constructor(handLength, startTime) {
+	constructor(handLength, startTime, center, displaySize) {
+		this.displaySize = displaySize;
 		this.handLength = handLength;
 		this.startTime = startTime;
 		this.deltaDegree = 360 / startTime;
-		this.degree = 180;
+		this.degree = 180; //console.log(adjustedLength)
 
 		this.pad = { x: 2, y: 2 };
-		this.center = 15;
+		this.center = center;
 	}
 	moveHand(tilesArr) {
 		this.degree < 360
@@ -98,14 +99,16 @@ class Clock {
 }
 
 class BlueWall {
-	constructor() {
+	constructor(center, displaySize) {
 		this.pad = { x: 2, y: 2 };
-		this.center = 15;
+		this.center = center;
+		this.displaySize = displaySize;
 	}
 
 	drawWall(tilesArr, length) {
 		//loop 360 degrees
-		for (let i = 0; i < 360; i++) {
+		console.log(length);
+		for (let i = 0; i < 360 && length > 2; i++) {
 			const tanAB = getTanFromDegree(i);
 			const cSquare = length * length;
 			const tanABSquare = tanAB * tanAB;
@@ -120,7 +123,12 @@ class BlueWall {
 				a = (this.center + this.pad.x) * 2 - a - 1;
 				b = (this.center + this.pad.y) * 2 - b - 1;
 			}
-			if (a < 34 && a >= 1 && b < 34 && b >= 1) {
+			if (
+				a < this.displaySize.x - 1 &&
+				a >= 1 &&
+				b < this.displaySize.y - 1 &&
+				b >= 1
+			) {
 				tilesArr[b][a].wall = true;
 			}
 		}
@@ -128,9 +136,10 @@ class BlueWall {
 }
 
 class Player {
-	constructor(x, y) {
+	constructor(x, y, displaySize) {
 		this.x = x;
 		this.y = y;
+		this.displaySize = displaySize;
 
 		this.currentImg = "";
 		this.imgs = {
@@ -176,14 +185,14 @@ class Player {
 			this.y = 1;
 		}
 
-		if (this.y == 34) {
-			this.y = 33;
+		if (this.y == this.displaySize.y-1) {
+			this.y = this.displaySize.y - 2;
 		}
 		if (this.x == 0) {
 			this.x = 1;
 		}
-		if (this.x == 34) {
-			this.x = 33;
+		if (this.x == this.displaySize.x-1) {
+			this.x = this.displaySize.x - 2;
 		}
 	}
 }
