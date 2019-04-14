@@ -31,7 +31,7 @@ class Person {
 
 //end people class
 
-const person1 = new Person(400, 400);
+const person1 = new Person(200, 200);
 console.log(person1);
 
 
@@ -40,8 +40,8 @@ const runLoop = () => {
 
 	setInterval(() => {
 
-		person1.pos.x+=ranN(10)-5;
-		person1.pos.y+=ranN(10)-5;
+		person1.pos.x+=ranN(2)-1;
+		person1.pos.y+=ranN(2)-1;
 		
 		const payload = [{ topic: "Position", messages: `id:${person1.id},posX:${person1.pos.x},posY:${person1.pos.y}` }];
 	
