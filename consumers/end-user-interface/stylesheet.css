@@ -1,0 +1,35 @@
+* {
+    box-sizing: border-box
+}
+
+body {
+    background-color: antiquewhite
+}
+
+#main-container {
+    position: fixed;
+    top: 25px;
+    left: 25px;
+
+    height: 600px;
+    width : 600px;
+
+    background-color: salmon
+}
+
+#secondary-container {
+    position: fixed;
+    top: 25px;
+    left: 675px;
+
+    height: 600px;
+    width: 300px;
+
+    background-color: salmon;
+
+}
+
+#main-canvas {
+    height:600px;
+    width:600px;
+}

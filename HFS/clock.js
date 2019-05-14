@@ -7,8 +7,8 @@ const { Tile, Clock, BlueWall, Player } = require("./clock-classes");
 const ranN = num => Math.floor(Math.random() * num); //return random number from 0-num
 const getTanFromDegree = degrees => Math.tan((degrees * Math.PI) / 180);
 
-const displaySize = { x: 36, y: 36 };
-const center = 16;
+const displaySize = { x: 35, y: 35 };
+const center = 15.5;
 
 let display = [];
 let tileMap = [];
@@ -24,13 +24,13 @@ for (let j = 0; j < displaySize.y; j++) {
 }
 
 let length = 25;
-let startTime = 100;
+let startTime = 1000;
 let passedTime = startTime;
 
-const clock = new Clock(15, startTime,center,displaySize);
-const blueWall = new BlueWall(center,displaySize);
+const clock = new Clock(15, startTime, center, displaySize);
+const blueWall = new BlueWall(center, displaySize);
 
-const player1 = new Player(23, 23,displaySize);
+const player1 = new Player(23, 23, displaySize);
 
 const resetTiles = () => {
 	for (let i = 0; i < tileMap.length; i++) {
@@ -56,13 +56,17 @@ const updateTiles = () => {
 
 // TEST MSG //
 
-const addMsg = (displayArr,timeLeft) => {
+const addMsg = (displayArr, timeLeft) => {
 	for (let j = 5; j < 10; j++) {
 		for (let i = displaySize.x; i < 20 + displaySize.x; i++) {
 			if (i < displaySize.x + 10) {
 				displayArr[j][i] = "  ";
-			} else if (i == displaySize.x + 12 && j == 5){
-				displayArr[j][i]= `Time left: ${timeLeft}`
+			} else if (i == displaySize.x + 12 && j == 5) {
+				displayArr[j][i] = `Time left: ${timeLeft}`;
+			} else if (i == displaySize.x + 12 && j == 6) {
+				displayArr[j][i] = `${player1.currentImg} Player 1 Health: ${
+					player1.health
+				}`;
 			}
 		}
 	}
@@ -86,7 +90,7 @@ setInterval(() => {
 	player1.drawPlayer(tileMap);
 	updateTiles();
 
-	addMsg(display,passedTime);
+	addMsg(display, passedTime);
 
 	blueWall.drawWall(tileMap, adjustedLength);
 	//Render display
@@ -94,7 +98,7 @@ setInterval(() => {
 		console.log(display[j].join(""));
 	}
 	//	passedTime--;
-	passedTime < 0 ? (passedTime = startTime) : passedTime--;
-}, 80);
+	passedTime <= 0 ? (passedTime = startTime - 1) : passedTime--;
+}, 60);
 
 // END LOOP //

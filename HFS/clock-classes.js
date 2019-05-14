@@ -1,6 +1,21 @@
 const ranN = num => Math.floor(Math.random() * num); //return random number from 0-num
 const getTanFromDegree = degrees => Math.tan((degrees * Math.PI) / 180);
 
+/*
+"\ud83d\udc**"
+00 - 3f => animals
+40 - 50 => human parts
+51 - 62 => clothing
+63 - 9f => humans and feels
+a0 - af => random and shit
+b0 - b9 => monies
+ba - ee => office stuff
+ef - ff => phones / tvs / appliances
+
+e**
+
+
+*/
 class Tile {
 	constructor(x, y, displaySize) {
 		this.pos = { x: x, y: y };
@@ -45,9 +60,10 @@ class Tile {
 		if (this.player) {
 			this.current = this.player;
 		} else if (this.clock) {
-			this.current = "\ud83d\udcb8";
+			this.current = "\ud83d\udcb1";
 		} else if (this.wall) {
-			this.current = "\x1b[34m00\x1b[0m";
+		//	this.current = "\x1b[34m00\x1b[0m";	//00
+			this.current = "\ud83d\udca2";	//red ()
 			//		this.current = "\ud83c\udf00"; //cyclone
 			//		this.current = 	"\ud83c\udf0a"; //tsunami
 			//		this.current = 	"\ud83d\udd35"; //blue circle
@@ -90,8 +106,8 @@ class Clock {
 		b = Math.floor(b + this.center + this.pad.y);
 
 		if (this.degree > 90 && this.degree <= 270) {
-			a = (this.center + this.pad.x) * 2 - a;
-			b = (this.center + this.pad.y) * 2 - b;
+			a = (this.center + this.pad.x) * 2 - a - 1;
+			b = (this.center + this.pad.y) * 2 - b - 1;
 		}
 
 		tilesArr[b][a].clock = true;
@@ -107,7 +123,6 @@ class BlueWall {
 
 	drawWall(tilesArr, length) {
 		//loop 360 degrees
-		console.log(length);
 		for (let i = 0; i < 360 && length > 2; i++) {
 			const tanAB = getTanFromDegree(i);
 			const cSquare = length * length;
@@ -166,13 +181,20 @@ class Player {
 			? (this.currentImg = this.imgs.vlow)
 			: (this.currentImg = this.imgs.dead);
 	}
-	drawPlayer(tilesArr) {
-		Math.random() > 0.7 ? this.health++ : this.health--;
-		if (this.health < -20) {
-			this.health = 100;
+	updateHealth(tilesArr){
+		let currentTile = tilesArr[this.y][this.x]
+		if(currentTile.clock){
+			this.health -= 5
 		}
+		if(currentTile.wall){
+			this.health -= 1;
+		}
+	}
+
+	drawPlayer(tilesArr) {
 		this.updateImg();
 		this.movePlayer(tilesArr);
+		this.updateHealth(tilesArr)
 		tilesArr[this.y][this.x].player = this.currentImg;
 	}
 	movePlayer(tilesArr) {
@@ -185,13 +207,13 @@ class Player {
 			this.y = 1;
 		}
 
-		if (this.y == this.displaySize.y-1) {
+		if (this.y == this.displaySize.y - 1) {
 			this.y = this.displaySize.y - 2;
 		}
 		if (this.x == 0) {
 			this.x = 1;
 		}
-		if (this.x == this.displaySize.x-1) {
+		if (this.x == this.displaySize.x - 1) {
 			this.x = this.displaySize.x - 2;
 		}
 	}
