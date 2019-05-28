@@ -183,7 +183,8 @@ class SimulationEngine {
 			if (this.camera.following) {
 				this.cameraHandler();
 			} else {
-				this.cameraHandler(this.user);
+				Math.random() < 0.5 ?
+				this.cameraHandler(this.user) : this.cameraHandler(this.entityList[2])
 			}
 		} //mouse wheel scolling
 		if (mapMouse["zoom"]){
